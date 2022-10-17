@@ -4,40 +4,28 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         int selection = getInputFromList("account");
-        String acctType = "";
         Scanner scanner = new Scanner(System.in);
+        String[] acctType = {"Regular Account", "Interest Account", "Checking Account"};
         double amount;
-
-        switch (selection) {
-            case 1 -> acctType = "Regular Account";
-            case 2 -> acctType = "Interest Account";
-            case 3 -> acctType = "Checking Account";
-        }
 
         System.out.print("Enter Account Name: ");
         String name = scanner.nextLine();
-        Account account = new Account(name, acctType);
+        Account account = new Account(name, acctType[selection - 1]);
         account.displayInfo();
 
         while (true) {
             int transactType = getInputFromList("transaction");
+            String[] operation = {"Deposit", "Withdraw"};
 
-            switch (transactType) {
-                case 1 -> {
-                    amount = getAmountDepositWithdraw("Deposit");
-                    account.depositWithdraw(amount, "Deposit");
-                    System.out.println("Current Balance: " + account.getBalance());
-                }
-                case 2 -> {
-                    amount = getAmountDepositWithdraw("Withdraw");
-                    account.depositWithdraw(amount, "Withdraw");
-                    System.out.println("Current Balance: " + account.getBalance());
-                }
-                case 3 -> account.displayInfo();
-                case -1 -> { // Exit
-                    System.out.println("Goodbye!");
-                    System.exit(0);
-                }
+            if (transactType == 1 || transactType == 2) {
+                amount = getAmountDepositWithdraw(operation[transactType - 1]);
+                account.depositWithdraw(amount, operation[transactType - 1]);
+                System.out.println("Current Balance: " + account.getBalance());
+            } else if (transactType == 3)
+                account.displayInfo();
+            else if (transactType == -1) {
+                System.out.println("Goodbye!");
+                System.exit(0);
             }
         }
     }
